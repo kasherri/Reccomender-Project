@@ -1,0 +1,50 @@
+Link Recommender Chrome Extension - Developer Documentation
+Overview
+The Link Recommender Chrome Extension is designed to enhance user browsing by recommending similar or related links based on the user's browsing history and the content of the current page. This extension leverages Natural Language Processing (NLP) techniques to analyze the content of visited web pages and make intelligent link recommendations.
+
+Features:
+Content Analysis: Uses a pre-trained NLP model to generate embeddings (semantic representations) of the content of the pages the user visits.
+Similarity Matching: Compares embeddings using cosine similarity to recommend links that are semantically similar to the current page.
+On-device Processing: The recommendation engine runs entirely within the browser using TensorFlow.js, ensuring privacy and security.
+
+Setup Instructions
+Prerequisites
+Node.js (optional): While not required for running the extension, having Node.js installed can be helpful for running local development tools.
+TensorFlow.js: The extension relies on TensorFlow.js for on-device machine learning. It’s included via a CDN link in popup.html.
+Chrome Browser: Ensure you have the latest version of Chrome installed.
+Steps to Run the Extension
+Clone or Download the Repository: Clone the repository to your local machine or download the ZIP file.
+
+Load the Extension into Chrome:
+
+Open Chrome and navigate to chrome://extensions/.
+Enable "Developer mode" using the toggle switch in the top right corner.
+Click "Load unpacked" and select the directory containing the extension's files.
+Install Dependencies:
+
+No external dependencies need to be installed manually, as TensorFlow.js and other libraries are included via CDN in the popup.html.
+Run the Extension:
+
+After loading, the extension's icon will appear in the Chrome toolbar. Visit a few web pages to generate some history, then click the icon to see the recommended links based on your browsing history and the current page content.
+How It Works
+Workflow
+Page Visit:
+
+When a user visits a new page, the content.js script extracts the title and meta description.
+This data is sent to background.js, which stores the information.
+Generating Embeddings:
+
+When the user opens the extension popup, popup.js retrieves the stored history and sends the current page info to model.js.
+model.js generates an embedding for the current page and for each visited page using the pre-trained NLP model.
+Recommendation Engine:
+
+recommender.js compares the current page’s embedding with those from the history using cosine similarity.
+Links with a similarity score above a certain threshold (e.g., 0.8) are recommended to the user.
+Displaying Recommendations:
+
+The recommended links are displayed in the popup. The user can click on any of the recommended links to navigate to them.
+Key Functions and Methods
+loadModel() (ml/model.js): Loads the pre-trained BERT model for generating embeddings.
+getEmbedding(text) (ml/model.js): Converts a piece of text into an embedding tensor using the loaded model.
+cosineSimilarity(embedding1, embedding2) (popup/popup.js): Computes the cosine similarity between two embeddings to determine how similar two pieces of content are.
+getRecommendations(visitedLinks, pageInfo) (popup/popup.js): Generates a list of recommended links by comparing the current page's embedding with those of visited pages.
